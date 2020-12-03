@@ -2,8 +2,7 @@ package main
 
 import (
 	"btb/constants"
-	"btb/io"
-	"github.com/fatih/color"
+	"btb/service"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
@@ -40,21 +39,7 @@ func main() {
 			},
 		},
 		Action: func(c *cli.Context) error {
-			allFile, err := io.GetAllFile(markdownPath)
-			if err != nil {
-				log.Fatal("read file error")
-			}
-
-			for _, fileName := range allFile {
-				color.Blue("fileName=[%v]", fileName)
-			}
-			color.Green("Run [%v] size successfully!!!", len(allFile))
-			context, err := io.ReadFileContext(allFile[0])
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			color.Red(context)
+			service.DownLoadPic(markdownPath)
 
 			return nil
 		},
