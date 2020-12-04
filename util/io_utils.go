@@ -1,8 +1,11 @@
-package io
+package util
 
 import (
 	"bufio"
+	"errors"
+	"io"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"strings"
 )
@@ -18,7 +21,9 @@ func GetAllFile(filePath string) (*[]string, error) {
 		if fi.IsDir() {
 			GetAllFile(filePath + "/" + fi.Name() + "/")
 		} else {
-			allFile = append(allFile, filePath+"/"+fi.Name())
+			if strings.HasSuffix(fi.Name(), "md") {
+				allFile = append(allFile, filePath+"/"+fi.Name())
+			}
 		}
 	}
 	return &allFile, err
@@ -53,4 +58,32 @@ func readln(r *bufio.Reader) (string, error) {
 		ln = append(ln, line...)
 	}
 	return string(ln), err
+}
+
+//DownloadFile
+func DownloadFile(url, fileName string) error {
+	//Get the response bytes from the url
+	response, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode != 200 {
+		return errors.New("Received non 200 response code")
+	}
+	//Create a empty file
+	file, err := os.Create(fileName)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	//Write the bytes to the fiel
+	_, err = io.Copy(file, response.Body)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

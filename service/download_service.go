@@ -1,42 +1,49 @@
 package service
 
 import (
-	"btb/io"
+	"btb/util"
 	"fmt"
 	"github.com/fatih/color"
 	"log"
 )
 
-func DownLoadPic(markdownPath string) {
+func DownLoadPic(markdownPath, downloadPath string) {
 
-	allFile, err := io.GetAllFile(markdownPath)
+	allFile, err := util.GetAllFile(markdownPath)
 	if err != nil {
 		log.Fatal("read file error")
 	}
 
 	for _, filePath := range *allFile {
-		//context, err := io.ReadFileAllContext(filePath)
-		//if err != nil {
-		//	log.Fatal(err)
-		//}
 		picCount := 0
-		allLine, err := io.ReadFileLine(filePath)
+		allLine, err := util.ReadFileLine(filePath)
 		if err != nil {
 			log.Fatal(err)
 		}
 		for _, line := range *allLine {
-			picture, err := io.MatchPicture(&line)
-			if err == nil && *picture != "" {
-				fmt.Printf("file:%v pic:%v \n", filePath, *picture)
+			url, err := util.MatchPicture(&line)
+			if err == nil && *url != "" {
+				err := util.DownloadFile(*url, *genFullFileName(downloadPath, filePath, url))
+				if err != nil {
+					log.Fatal(err)
+				}
+				fmt.Printf("Download: %v image: %v successful.\n", filePath, *url)
 				picCount++
 			}
 
 		}
-		color.Green("Run [%v], [%v]pic successfully!!!", filePath, picCount)
+		color.Green("Run [%v], [%v]images successfully!!!", filePath, picCount)
 
 	}
 	color.Green("Run [%v] size successfully!!!", len(*allFile))
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+// downLoadPath/filename-5cd1d11a5612f.jpg
+func genFullFileName(downLoadPath, filePath string, url *string) *string {
+	suffix := util.GetFileSuffix(*url)
+	fullFileName := downLoadPath + "/" + util.GetFileSuffix(filePath) + "-" + suffix
+	return &fullFileName
 }

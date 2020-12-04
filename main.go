@@ -39,7 +39,7 @@ func main() {
 			},
 		},
 		Action: func(c *cli.Context) error {
-			service.DownLoadPic(markdownPath)
+			service.DownLoadPic(markdownPath, downloadPath)
 
 			return nil
 		},
