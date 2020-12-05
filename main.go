@@ -28,6 +28,7 @@ func main() {
 				Usage:       "The path where the image is stored",
 				Aliases:     []string{"dp"},
 				Destination: &downloadPath,
+				Required:    true,
 				Value:       constants.DownloadPath,
 			},
 			&cli.StringFlag{
@@ -35,6 +36,7 @@ func main() {
 				Usage:       "The path where the markdown file is stored",
 				Aliases:     []string{"mp"},
 				Destination: &markdownPath,
+				Required:    true,
 				Value:       constants.MarkdownPath,
 			},
 		},
