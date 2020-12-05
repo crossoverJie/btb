@@ -17,13 +17,13 @@ func TestMatchPicture(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := MatchPicture(&tt.args.context)
+			got, err := MatchImg(&tt.args.context)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("MatchPicture() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("MatchImg() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if *got != tt.want {
-				t.Errorf("MatchPicture() got = %v, want %v", *got, tt.want)
+				t.Errorf("MatchImg() got = %v, want %v", *got, tt.want)
 			}
 		})
 	}

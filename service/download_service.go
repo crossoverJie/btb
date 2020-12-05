@@ -3,6 +3,7 @@ package service
 import (
 	"btb/util"
 	"fmt"
+	"github.com/cheggaaa/pb/v3"
 	"github.com/fatih/color"
 	"log"
 	"sync"
@@ -12,7 +13,7 @@ func DownLoadPic(markdownPath, downloadPath string) {
 	wg := sync.WaitGroup{}
 	allFile, err := util.GetAllFile(markdownPath)
 	wg.Add(len(*allFile))
-
+	bar := pb.StartNew(len(*allFile))
 	if err != nil {
 		log.Fatal("read file error")
 	}
@@ -25,23 +26,26 @@ func DownLoadPic(markdownPath, downloadPath string) {
 			if err != nil {
 				log.Fatal(err)
 			}
-			for _, line := range *allLine {
-				url, err := util.MatchPicture(&line)
-				if err == nil && *url != "" {
-					err := util.DownloadFile(*url, *genFullFileName(downloadPath, filePath, url))
-					if err != nil {
-						log.Fatal(err)
-					}
-					fmt.Printf("Download: %v image: %v successful.\n", filePath, *url)
-					picCount++
+			availableImgs := util.MatchAvailableImg(allLine)
+			for _, url := range *availableImgs {
+				if err != nil {
+					log.Fatal(err)
 				}
+				err := util.DownloadFile(url, *genFullFileName(downloadPath, filePath, &url))
+				if err != nil {
+					log.Fatal(err)
+				}
+				fmt.Printf("Download: %v image: %v successful.\n", filePath, url)
+				picCount++
 
 			}
-			color.Green("Run [%v], [%v]images successfully!!!", filePath, picCount)
+			color.Green("Run [%v], [%v]images successfully!!!", filePath, len(*availableImgs))
 			wg.Done()
+			bar.Increment()
 		}(filePath)
 	}
 	wg.Wait()
+	bar.Finish()
 	color.Green("Run [%v] size successfully!!!", len(*allFile))
 
 	if err != nil {
