@@ -19,7 +19,7 @@ func GetAllFile(filePath string) (*[]string, error) {
 			continue
 		}
 		if fi.IsDir() {
-			GetAllFile(filePath + "/" + fi.Name() + "/")
+			GetAllFile(filePath + "/" + fi.Name())
 		} else {
 			if strings.HasSuffix(fi.Name(), "md") {
 				allFile = append(allFile, filePath+"/"+fi.Name())
@@ -62,6 +62,11 @@ func readln(r *bufio.Reader) (string, error) {
 
 //DownloadFile
 func DownloadFile(url, fileName string) error {
+
+	if Exist(fileName) {
+		return nil
+	}
+
 	//Get the response bytes from the url
 	response, err := http.Get(url)
 	if err != nil {
@@ -86,4 +91,9 @@ func DownloadFile(url, fileName string) error {
 	}
 
 	return nil
+}
+
+func Exist(filename string) bool {
+	_, err := os.Stat(filename)
+	return err == nil || os.IsExist(err)
 }
