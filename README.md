@@ -2,7 +2,7 @@
 🕶btb:a command line tool for blog toolbox.
 
 ```shell script
-$ btb -m b -mp "/Users/chenjie/Downloads/movie" -dp "/Users/chenjie/Downloads/movie/image"
+$ btb -m b -mp "/opt/data/md/" -dp "/opt/data/md/images/"
 DownLoading: /Users/chenjie/Downloads/movie/test1/cicada5.md 2 / 2 <-------------------------------------> 0 p/s 100.00%
 DownLoading: /Users/chenjie/Downloads/movie/cicada4.md 2 / 2 <-------------------------------------------> 0 p/s 100.00%
 DownLoading: /Users/chenjie/Downloads/movie/cicada1.md 3 / 3 <-------------------------------------------> 1 p/s 100.00%
@@ -18,6 +18,15 @@ Successful handling of [6] files.
 ```shell script
 curl -fsSL https://raw.githubusercontent.com/crossoverJie/btb/master/install.sh | bash
 ```
+
+## Local installation
+
+```shell script
+make install
+```
+![](https://tva1.sinaimg.cn/large/0081Kckwly1glflcdf6d9j30ce04kjrt.jpg)
+
+It will generate binary files for different platforms.
 
 # Usage
 
