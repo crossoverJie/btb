@@ -1,6 +1,8 @@
 # btb
 🕶btb:a command line tool for blog toolbox.
 
+[![asciicast](https://asciinema.org/a/ftFt2WZDx3PV4VQFzZZyw0wSl.svg)](https://asciinema.org/a/ftFt2WZDx3PV4VQFzZZyw0wSl)
+
 # Install
 ```shell script
 curl -fsSL https://raw.githubusercontent.com/crossoverJie/btb/master/install.sh | bash
