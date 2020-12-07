@@ -1,6 +1,17 @@
 # btb
 🕶btb:a command line tool for blog toolbox.
 
+```shell script
+$ btb -m b -mp "/Users/chenjie/Downloads/movie" -dp "/Users/chenjie/Downloads/movie/image"
+DownLoading: /Users/chenjie/Downloads/movie/test1/cicada5.md 2 / 2 <-------------------------------------> 0 p/s 100.00%
+DownLoading: /Users/chenjie/Downloads/movie/cicada4.md 2 / 2 <-------------------------------------------> 0 p/s 100.00%
+DownLoading: /Users/chenjie/Downloads/movie/cicada1.md 3 / 3 <-------------------------------------------> 1 p/s 100.00%
+DownLoading: /Users/chenjie/Downloads/movie/cicada2.md 3 / 3 <-------------------------------------------> 1 p/s 100.00%
+DownLoading: /Users/chenjie/Downloads/movie/cicada3.md 3 / 3 <-------------------------------------------> 1 p/s 100.00%
+DownLoading: /Users/chenjie/Downloads/movie/test1/cicada6.md 3 / 3 <-------------------------------------> 1 p/s 100.00%
+Successful handling of [6] files.
+```
+
 [![asciicast](https://asciinema.org/a/ftFt2WZDx3PV4VQFzZZyw0wSl.svg)](https://asciinema.org/a/ftFt2WZDx3PV4VQFzZZyw0wSl)
 
 # Install
