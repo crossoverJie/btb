@@ -22,6 +22,8 @@ curl -fsSL https://raw.githubusercontent.com/crossoverJie/btb/master/install.sh 
 ## Local installation
 
 ```shell script
+git clone https://github.com/crossoverJie/btb.git
+cd btb
 make install
 ```
 ![](https://tva1.sinaimg.cn/large/0081Kckwly1glflcdf6d9j30ce04kjrt.jpg)
