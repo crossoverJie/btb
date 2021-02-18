@@ -9,7 +9,7 @@ import (
 	"sync"
 )
 
-func DownLoadPic(markdownPath, downloadPath, token string) *map[string]map[string]string {
+func DownLoadPic(markdownPath, downloadPath string, uploadService UploadService) *map[string]map[string]string {
 	wg := sync.WaitGroup{}
 	allFile, err := util.GetAllFile(markdownPath)
 	wg.Add(len(*allFile))
@@ -18,10 +18,6 @@ func DownLoadPic(markdownPath, downloadPath, token string) *map[string]map[strin
 		log.Fatal("read file error")
 	}
 
-	uploadService := SMSUpload{
-		Url:           "https://sm.ms/api/v2/upload",
-		Authorization: token,
-	}
 	var picMapping = make(map[string]map[string]string)
 
 	for _, filePath := range *allFile {

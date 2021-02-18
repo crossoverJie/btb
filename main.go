@@ -11,6 +11,7 @@ import (
 
 func main() {
 	var model, token string
+	var uploadService service.UploadService
 	downloadPath := constants.DownloadPath
 	markdownPath := constants.MarkdownPath
 
@@ -50,9 +51,13 @@ func main() {
 			},
 		},
 		Action: func(c *cli.Context) error {
+			uploadService = &service.SMSUpload{
+				Url:           "https://sm.ms/api/v2/upload",
+				Authorization: token,
+			}
 			constants.AppModel = model
 			color.Yellow("Current Model is [%v]", constants.Model[constants.AppModel])
-			picMapping := service.DownLoadPic(markdownPath, downloadPath, token)
+			picMapping := service.DownLoadPic(markdownPath, downloadPath, uploadService)
 
 			if model == constants.Replace {
 				service.Replace(picMapping)
