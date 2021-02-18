@@ -9,7 +9,7 @@ import (
 	"sync"
 )
 
-func DownLoadPic(markdownPath, downloadPath string) {
+func DownLoadPic(markdownPath, downloadPath, token string) *map[string]map[string]string {
 	wg := sync.WaitGroup{}
 	allFile, err := util.GetAllFile(markdownPath)
 	wg.Add(len(*allFile))
@@ -18,6 +18,12 @@ func DownLoadPic(markdownPath, downloadPath string) {
 		log.Fatal("read file error")
 	}
 
+	uploadService := SMSUpload{
+		Url:           "https://sm.ms/api/v2/upload",
+		Authorization: token,
+	}
+	var picMapping = make(map[string]map[string]string)
+
 	for _, filePath := range *allFile {
 
 		go func(filePath string) {
@@ -25,24 +31,40 @@ func DownLoadPic(markdownPath, downloadPath string) {
 			if err != nil {
 				log.Fatal(err)
 			}
-			availableImgs := util.MatchAvailableImg(allLine)
+			availableImgs := util.MatchAvailableImg(filePath, allLine)
 			bar := pb.ProgressBarTemplate(constants.PbTmpl).Start(len(*availableImgs))
 			bar.Set("fileName", filePath).
 				SetWidth(120)
+
+			var picMap = make(map[string]string)
 
 			for _, url := range *availableImgs {
 				if err != nil {
 					log.Fatal(err)
 				}
-				err := util.DownloadFile(url, *genFullFileName(downloadPath, filePath, &url))
+				filePathName := *genFullFileName(downloadPath, filePath, &url)
+				err := util.DownloadFile(url, filePathName)
 				if err != nil {
 					log.Fatal(err)
 				}
+
+				//Upload file
+				if constants.AppModel == constants.Replace {
+					uploadPath, err := uploadService.upload(filePathName)
+					if err != nil {
+						log.Fatalf("Upload file [%s] error %v", filePathName, err)
+						return
+					}
+					// Cache url
+					picMap[url] = uploadPath
+				}
+
 				bar.Increment()
-				//fmt.Printf("Download: %v image: %v successful.\n", filePath, url)
+				//fmt.Printf("Download: %v image: %v successful.\n", filePathName, url)
 
 			}
 			//color.Green("Run [%v], [%v]images successfully!!!\n", filePath, len(*availableImgs))
+			picMapping[filePath] = picMap
 			bar.Finish()
 			wg.Done()
 
@@ -54,11 +76,13 @@ func DownLoadPic(markdownPath, downloadPath string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	return &picMapping
 }
 
 // downLoadPath/filename-5cd1d11a5612f.jpg
 func genFullFileName(downLoadPath, filePath string, url *string) *string {
 	suffix := util.GetFileSuffix(*url)
-	fullFileName := downLoadPath + "/" + util.GetFileSuffix(filePath) + "-" + suffix
+	fullFileName := downLoadPath + "/" + util.GetFileSuffix(filePath) + "---" + suffix
 	return &fullFileName
 }
