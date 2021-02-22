@@ -26,7 +26,7 @@ git clone https://github.com/crossoverJie/btb.git
 cd btb
 make release
 ```
-![](https://tva1.sinaimg.cn/large/0081Kckwly1glflcdf6d9j30ce04kjrt.jpg)
+![](https://tva1.sinaimg.cn/large/008eGmZEly1gnwu89bf8vj30ia04iq3f.jpg)
 
 It will generate binary files for different platforms.
 
