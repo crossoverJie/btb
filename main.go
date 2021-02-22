@@ -3,13 +3,15 @@ package main
 import (
 	"btb/constants"
 	"btb/service"
+	"github.com/fatih/color"
 	"github.com/urfave/cli/v2"
 	"log"
 	"os"
 )
 
 func main() {
-	var model string
+	var model, token string
+	var uploadService service.UploadService
 	downloadPath := constants.DownloadPath
 	markdownPath := constants.MarkdownPath
 
@@ -17,7 +19,7 @@ func main() {
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:        "model",
-				Usage:       "operating mode; r:replace, b:backup",
+				Usage:       "Operating mode; r:replace, b:backup",
 				DefaultText: "b",
 				Aliases:     []string{"m"},
 				Required:    true,
@@ -39,9 +41,27 @@ func main() {
 				Required:    true,
 				Value:       constants.MarkdownPath,
 			},
+			&cli.StringFlag{
+				Name:        "token",
+				Usage:       "Upload token",
+				Aliases:     []string{"tk"},
+				Required:    true,
+				Destination: &token,
+				Value:       constants.MarkdownPath,
+			},
 		},
 		Action: func(c *cli.Context) error {
-			service.DownLoadPic(markdownPath, downloadPath)
+			uploadService = &service.SMSUpload{
+				Url:           "https://sm.ms/api/v2/upload",
+				Authorization: token,
+			}
+			constants.AppModel = model
+			color.Yellow("Current Model is [%v]", constants.Model[constants.AppModel])
+			picMapping := service.DownLoadPic(markdownPath, downloadPath, uploadService)
+
+			if model == constants.Replace {
+				service.Replace(picMapping)
+			}
 
 			return nil
 		},
