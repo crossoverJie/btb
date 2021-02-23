@@ -1,5 +1,5 @@
 
-🕶A command line tool for blog toolbox.
+☄️A command line tool for blog toolbox.
 
 ```shell script
 $ btb -m b -mp "/opt/data/md/" -dp "/opt/data/md/images/"
