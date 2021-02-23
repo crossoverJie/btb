@@ -1,5 +1,5 @@
-# btb
-🕶btb:a command line tool for blog toolbox.
+
+🕶A command line tool for blog toolbox.
 
 ```shell script
 $ btb -m b -mp "/opt/data/md/" -dp "/opt/data/md/images/"
@@ -35,18 +35,25 @@ It will generate binary files for different platforms.
 ## MacOS & Linux
 
 ```shell script
+# Backup
 btb -m b -mp "/opt/data/md/" -dp "/opt/data/images/"
+
+# Replace
+btb -m r -mp "/opt/data/md/" -dp "/opt/data/images/" -tk "abc123"
 ```
 
 ## Windows
 
 ```shell script
+# Backup
 ./btb.exe -m b -mp "/opt/data/md/" -dp "/opt/data/images/"
+
+# Replace
+./btb.exe -m r -mp "/opt/data/md/" -dp "/opt/data/images/" -tk "abc123"
 ```
 
 # Help
 ```shell script
-btb -h
 NAME:
    btb - Help you backup and replace your blog's images
 
@@ -57,9 +64,11 @@ COMMANDS:
    help, h  Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
-   --model value, -m value            operating mode; r:replace, b:backup (default: b)
+   --model value, -m value            Operating mode; r:replace, b:backup (default: b)
    --download-path value, --dp value  The path where the image is stored (default: "/opt/data")
    --markdown-path value, --mp value  The path where the markdown file is stored (default: "/opt/data")
-   --help, -h
+   --token value, --tk value          Upload token (default: "/opt/data")
+   --help, -h                         show help (default: false)
+2021/02/23 14:10:17 Required flags "model, dp, mp, tk" not set
 ```
 
